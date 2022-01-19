@@ -5,7 +5,8 @@
         "commonjs": true,
         "es2020": true,
         "node": true,
-        "jest": true
+        "jest": true,
+        "parser": "@babel/eslint-parser"
     },
     "extends": "trybe-backend",
     "parserOptions": { "ecmaVersion": 11 }
