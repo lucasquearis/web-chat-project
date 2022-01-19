@@ -9,5 +9,5 @@
     },
     "extends": "trybe-backend",
     "parserOptions": { "ecmaVersion": 11 }
-  }
+}
   
