@@ -8,12 +8,31 @@
   </head>
   <body>
     <h1>Chat - Online</h1>
-    <ul id="ul-chat"></ul>
-    <form id="form">
-      <input id="msg-input"></input>
-      <button id="send">Enviar</button>
-    </form>
+    <div id="clients-container">
+      <ul id="online-list"></ul>
+      <form id="form-nickName">
+        <input
+          id="nickname-input"
+          data-testid="nickname-box"
+          placeholder="Nickname"
+        />
+        <button data-testid="nickname-button" id="nickname-button">
+          Trocar
+        </button>
+      </form>
+    </div>
+    <div style="background-color: aqua" id="messages-container">
+      <ul id="ul-chat"></ul>
+      <form id="message-form">
+        <input
+          data-testid="message-box"
+          placeholder="Mensagem..."
+          id="msg-input"
+        />
+        <button data-testid="send-button" id="send">Enviar</button>
+      </form>
+    </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="./helpers/createMessage.js"></script>
+  <script src="./helpers/service.js"></script>
 </html>

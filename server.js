@@ -13,7 +13,7 @@ const io = require('socket.io')(http, {
   },
 });
 
-require('./src/sockets/serverMessage')(io);
+require('./src/sockets/server')(io);
 
 app.use(express.static(path.join(__dirname, 'src', 'views')));
 
