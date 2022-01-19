@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,11 +15,10 @@ const io = require('socket.io')(http, {
 
 require('./src/sockets/serverMessage')(io);
 
-app.use(express.static(__dirname + '/src/views'));
+app.use(express.static(path.join(__dirname, 'src', 'views')));
 
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/src/views/index.html`);
 });
-
 
 http.listen(PORT, () => console.log(`Online na porta ${PORT}`));

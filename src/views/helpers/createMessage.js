@@ -7,18 +7,18 @@ formChat.addEventListener('submit', (e) => {
   e.preventDefault();
   socket.emit('message', {
     chatMessage: inputMessage.value,
-    nickname: 'Teste'
+    nickname: 'Teste',
   });
   inputMessage.value = '';
   return false;
 });
 
 const createMessage = (chatMessage) => {
-  const chatUl = document.getElementById("ul-chat");
-  const text = document.createElement("li");
+  const chatUl = document.getElementById('ul-chat');
+  const text = document.createElement('li');
   text.innerText = chatMessage;
   chatUl.appendChild(text);
 };
 
-socket.on("welcome", (message) => createMessage(message));
-socket.on("message", (message) => createMessage(message));
+socket.on('welcome', (message) => createMessage(message));
+socket.on('message', (message) => createMessage(message));
