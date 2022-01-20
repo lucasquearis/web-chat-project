@@ -15,7 +15,18 @@ const formatAMPM = (date) => {
   return `${day}-${month}-${year} ${formatedHour}`;
 };
 
-const userList = [];
+let userList = [];
+
+const updateUserList = (oldNick, newNick) => {
+  console.log('chegou!', newNick);
+  const newUserList = userList.map((user) => {
+    if (user === oldNick) {
+      return newNick;
+    }
+    return user;
+  });
+  userList = newUserList;
+};
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
@@ -28,10 +39,11 @@ module.exports = (io) => {
       console.log(`${nickname} enviou uma mensagem ${chatMessage}`);
       io.emit('message', `${formatAMPM(new Date())} - ${nickname}: ${chatMessage}`);
     });
-    socket.on('newUser', ({ nickname }) => {
-      console.log(userList);
-      return userList.includes(nickname) ? io
-        .emit('newUser', userList) : userList.push(nickname) && io.emit('newUser', userList);
+    socket.on('newUser', ({ nickname }) => (userList.includes(nickname) ? io
+        .emit('newUser', userList) : userList.push(nickname) && io.emit('newUser', userList)));
+    socket.on('updateUser', ({ oldNick, newNick }) => {
+      updateUserList(oldNick, newNick);
+      io.emit('newUser', userList);
     });
   });
 };
