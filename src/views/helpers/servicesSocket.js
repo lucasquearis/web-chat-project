@@ -1,13 +1,17 @@
 const socket = window.io();
 
-// const buttonNickName = document.getElementById('nickname-button');
-
 const newUser = (userList) => {
+  const nickNameStorage = sessionStorage.getItem('tokenNickname');
+  console.log(nickNameStorage);
+  console.log(socket.id);
+  const usersWithOutNickNameClient = userList.filter((user) => user.nickname !== nickNameStorage);
+  usersWithOutNickNameClient.unshift({ nickname: nickNameStorage, id: socket.id });
   const onlineList = document.getElementById('online-list');
   onlineList.innerHTML = '';
-  userList.forEach((user) => {
+  usersWithOutNickNameClient.forEach(({ nickname }) => {
     const userLi = document.createElement('li');
-    userLi.innerText = user;
+    userLi.dataset.testid = 'online-user';
+    userLi.innerText = nickname;
     onlineList.appendChild(userLi);
   });
 };
@@ -48,7 +52,6 @@ const renderMessages = (messagesList) => {
   messagesList.forEach(({ timestamp, nickname, message }) => {
     const messageFormat = `${timestamp} - ${nickname}: ${message}`;
     createMessage(messageFormat);
-    console.log(messageFormat);
   });
 };
 
@@ -57,3 +60,7 @@ socket.on('newUser', (userList) => {
   newUser(userList);
 });
 socket.on('renderMessagesDb', (messagesList) => renderMessages(messagesList));
+
+// window.onbeforeunload = () => {
+//   socket.disconnect();
+// };

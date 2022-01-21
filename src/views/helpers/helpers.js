@@ -28,7 +28,6 @@ const updateNickDB = (oldNick, newNick) => {
 const setDisplayNick = () => {
   const nickName = sessionStorage.getItem('tokenNickname');
 
-  nickNameDisplay.dataset.testid = 'online-user';
   nickNameDisplay.innerText = nickName;
   const nicknameInput = document.getElementById('nickname-input').value || nickName;
 
@@ -47,3 +46,8 @@ formNickName.addEventListener('submit', (e) => {
 
 setUpUserWebStorage();
 setDisplayNick();
+
+// window.onbeforeunload = () => {
+//   const socket = 
+//   socket.disconnect();
+// };
