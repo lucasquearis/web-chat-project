@@ -17,8 +17,6 @@ setDisplayNick();
 
 const newUser = (userList) => {
   const nickNameStorage = sessionStorage.getItem('tokenNickname');
-  console.log(nickNameStorage);
-  console.log(socket.id);
   const usersWithOutNickNameClient = userList.filter((user) => user.nickname !== nickNameStorage);
   usersWithOutNickNameClient.unshift({ nickname: nickNameStorage, id: socket.id });
   const onlineList = document.getElementById('online-list');
