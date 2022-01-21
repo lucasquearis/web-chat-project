@@ -10,7 +10,7 @@ function makeid(length) {
 }
 
 const setUpUserWebStorage = () => {
-  localStorage.setItem('tokenNickname', makeid(16));
+  sessionStorage.setItem('tokenNickname', makeid(16));
 };
 
 const formNickName = document.getElementById('form-nickName');
@@ -19,8 +19,6 @@ const nickNameDisplay = document.createElement('h2');
 
 const updateNickDB = (oldNick, newNick) => {
   const socket = window.io();
-  console.log('esse é o velho', oldNick);
-  console.log('esse é o novo', newNick);
   socket.emit('updateUser', {
     oldNick,
     newNick,
@@ -28,22 +26,22 @@ const updateNickDB = (oldNick, newNick) => {
 };
 
 const setDisplayNick = () => {
-  const nickName = localStorage.getItem('tokenNickname');
+  const nickName = sessionStorage.getItem('tokenNickname');
 
   nickNameDisplay.dataset.testid = 'online-user';
   nickNameDisplay.innerText = nickName;
   const nicknameInput = document.getElementById('nickname-input').value || nickName;
 
-  localStorage.setItem('tokenNickname', nicknameInput);
+  sessionStorage.setItem('tokenNickname', nicknameInput);
   nickNameDisplay.innerText = nicknameInput;
   formNickName.appendChild(nickNameDisplay);
 };
 
 formNickName.addEventListener('submit', (e) => {
   e.preventDefault();
-  const oldNick = localStorage.getItem('tokenNickname');
+  const oldNick = sessionStorage.getItem('tokenNickname');
   setDisplayNick();
-  const newNick = localStorage.getItem('tokenNickname');
+  const newNick = sessionStorage.getItem('tokenNickname');
   updateNickDB(oldNick, newNick);
 });
 

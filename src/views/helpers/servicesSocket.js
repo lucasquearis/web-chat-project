@@ -26,11 +26,16 @@ formChat.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const inputMessage = document.getElementById('msg-input');
-  const nickname = localStorage.getItem('tokenNickname');
+  const nickname = sessionStorage.getItem('tokenNickname');
 
   socket.emit('message', {
     chatMessage: inputMessage.value,
     nickname,
+  });
+
+  socket.emit('saveMessage', {
+    nickname,
+    message: inputMessage.value,
   });
 
   inputMessage.value = '';
@@ -40,12 +45,21 @@ formChat.addEventListener('submit', (e) => {
 socket.on('welcome', ({ chatMessage, onlineList }) => {
   createMessage(chatMessage);
   socket.emit('newUser', {
-    nickname: localStorage.getItem('tokenNickname'),
+    nickname: sessionStorage.getItem('tokenNickname'),
   });
   newUser(onlineList);
 });
+
+const renderMessages = (messagesList) => {
+  messagesList.forEach(({ timestamp, nickname, message }) => {
+    const messageFormat = `${timestamp} - ${nickname}: ${message}`;
+    createMessage(messageFormat);
+    console.log(messageFormat);
+  });
+};
 
 socket.on('message', (message) => createMessage(message));
 socket.on('newUser', (userList) => {
   newUser(userList);
 });
+socket.on('renderMessagesDb', (messagesList) => renderMessages(messagesList));

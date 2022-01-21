@@ -18,7 +18,7 @@ require('./src/sockets/server')(io);
 app.use(express.static(path.join(__dirname, 'src', 'views')));
 
 app.get('/', (req, res) => {
-  res.sendFile(`${__dirname}/src/views/index.html`);
+  res.sendFile(`${__dirname}/src/views/index.ejs`);
 });
 
 http.listen(PORT, () => console.log(`Online na porta ${PORT}`));
