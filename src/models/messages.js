@@ -1,7 +1,7 @@
 const connection = require('./connection');
 const { formatAMPM } = require('../sockets/helpers');
 
-const saveMessage = ({ message, nickname }) => connection()
+const saveMessage = (message, nickname) => connection()
     .then((db) => db.collection('messages').insertOne({
       message,
       nickname,

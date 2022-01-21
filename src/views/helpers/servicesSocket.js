@@ -33,17 +33,11 @@ formChat.addEventListener('submit', (e) => {
     nickname,
   });
 
-  socket.emit('saveMessage', {
-    nickname,
-    message: inputMessage.value,
-  });
-
   inputMessage.value = '';
   return false;
 });
 
-socket.on('welcome', ({ chatMessage, onlineList }) => {
-  createMessage(chatMessage);
+socket.on('welcome', ({ onlineList }) => {
   socket.emit('newUser', {
     nickname: sessionStorage.getItem('tokenNickname'),
   });

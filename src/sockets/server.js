@@ -15,13 +15,13 @@ const updateUserList = (oldNick, newNick) => {
 
 const emitWelcome = (socket) => {
   socket.emit('welcome', {
-    chatMessage: 'Seja bem vindo ao chat!',
     onlineList: userList,
   });
 };
 
 const onMessage = (socket, io) => {
-  socket.on('message', ({ chatMessage, nickname }) => {
+  socket.on('message', async ({ chatMessage, nickname }) => {
+    await saveMessage(chatMessage, nickname);
     io.emit('message', `${formatAMPM(new Date())} - ${nickname}: ${chatMessage}`);
   });
 };
@@ -42,12 +42,6 @@ const emitRenderMessagesDb = async (socket) => {
   socket.emit('renderMessagesDb', await listMessages());
 };
 
-const onSaveMessage = (socket) => {
-  socket.on('saveMessage', async (message) => {
-    await saveMessage(message);
-  });
-};
-
 module.exports = (io) => {
   io.on('connection', (socket) => {
     emitWelcome(socket);
@@ -55,6 +49,5 @@ module.exports = (io) => {
     onNewUser(socket, io);
     onUpdateUser(socket, io);
     emitRenderMessagesDb(socket);
-    onSaveMessage(socket);
   });
 };
