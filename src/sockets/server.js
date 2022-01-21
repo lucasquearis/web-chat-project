@@ -4,6 +4,8 @@ const { formatAMPM } = require('./helpers.js');
 let userList = [];
 
 const updateUserList = (oldNick, newNick) => {
+  console.log(oldNick);
+  console.log(newNick);
   const newUserList = userList.map((user) => {
     if (user.nickname === oldNick) {
       return { nickname: newNick, id: user.id };
@@ -40,7 +42,7 @@ const onNewUser = (socket, io) => {
 
 const onUpdateUser = (socket, io) => {
   socket.on('updateUser', ({ oldNick, newNick }) => {
-    updateUserList(oldNick, newNick, socket);
+    updateUserList(oldNick, newNick);
     io.emit('newUser', userList);
   });
 };
@@ -53,6 +55,7 @@ const onRemoveUser = (socket, io) => {
   socket.on('disconnect', () => {
     const indexOfUser = userList.findIndex((user) => user.id === socket.id);
     userList.splice(indexOfUser, 1);
+    console.log(indexOfUser);
     console.log('lista atualizada', userList);
     io.emit('newUser', userList);
   });

@@ -1,5 +1,20 @@
 const socket = window.io();
 
+const nickNameDisplay = document.createElement('h2');
+const formNickName = document.getElementById('form-nickName');
+
+const setDisplayNick = () => {
+  const nickName = sessionStorage.getItem('tokenNickname');
+
+  nickNameDisplay.innerText = nickName;
+  const nicknameInput = document.getElementById('nickname-input').value || nickName;
+
+  sessionStorage.setItem('tokenNickname', nicknameInput);
+  nickNameDisplay.innerText = nicknameInput;
+  formNickName.appendChild(nickNameDisplay);
+};
+setDisplayNick();
+
 const newUser = (userList) => {
   const nickNameStorage = sessionStorage.getItem('tokenNickname');
   console.log(nickNameStorage);
@@ -25,6 +40,21 @@ const createMessage = (chatMessage) => {
 };
 
 const formChat = document.getElementById('message-form');
+
+const updateNickDB = (oldNick, newNick) => {
+  socket.emit('updateUser', {
+    oldNick,
+    newNick,
+  });
+};
+
+formNickName.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const oldNick = sessionStorage.getItem('tokenNickname');
+  setDisplayNick();
+  const newNick = sessionStorage.getItem('tokenNickname');
+  updateNickDB(oldNick, newNick);
+});
 
 formChat.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -61,6 +91,6 @@ socket.on('newUser', (userList) => {
 });
 socket.on('renderMessagesDb', (messagesList) => renderMessages(messagesList));
 
-// window.onbeforeunload = () => {
-//   socket.disconnect();
-// };
+window.onbeforeunload = () => {
+  socket.disconnect();
+};
